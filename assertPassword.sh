@@ -16,11 +16,11 @@ then
             [Yy]* ) 
                     echo $TRANSMISSION_USER > .transmissionUser
                     echo $TRANSMISSION_PASSWORD > .transmissionPassword
-                    break;;
+                    ;;
             [Nn]* )
-                    break;;
+                    ;;
             * )
-                    break;;
+                    ;;
         esac
     fi
 fi
