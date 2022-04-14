@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if [ -z ${TRANSMISSION_PASSWORD+x} ]
+if [ -z ${TR_AUTH+x} ] || [ ! -z ${1+x} ]
 then
     if [ -f .transmissionUser -a -f .transmissionPassword ]
     then
@@ -23,6 +23,6 @@ then
                     ;;
         esac
     fi
-fi
 
-export TRANSMISSION_CREDENTIALS="$TRANSMISSION_USER:$TRANSMISSION_PASSWORD"
+    export TR_AUTH="$TRANSMISSION_USER:$TRANSMISSION_PASSWORD"
+fi
