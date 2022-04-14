@@ -17,7 +17,8 @@ then
                     echo $TRANSMISSION_USER > .transmissionUser
                     echo $TRANSMISSION_PASSWORD > .transmissionPassword
                     break;;
-            [Nn]* ) 
+            [Nn]* )
+                    break;;
             * )
                     break;;
         esac
