@@ -10,7 +10,7 @@ TRACKER_MATCH="$1"
 
 while read TORRENT_ID
 do
-	if transmission-remote -n "$TRANSMISSION_PASSWORD" -t $TORRENT_ID --info-trackers | grep $TRACKER_MATCH -q
+	if transmission-remote -n "$TRANSMISSION_CREDENTIALS" -t $TORRENT_ID --info-trackers | grep $TRACKER_MATCH -q
 	then 
 		echo $TORRENT_ID
 	fi
