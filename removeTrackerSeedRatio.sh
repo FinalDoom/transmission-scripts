@@ -1,6 +1,10 @@
-source assertPassword.sh
+#!/usr/bin/env bash
+
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+source $SCRIPT_DIR/assertPassword.sh
 
 while read TORRENT_ID
 do
-	transmission-remote -n "$TRANSMISSION_CREDENTIALS" -t $TORRENT_ID -SR
+	transmission-remote -ne -t $TORRENT_ID -SR
 done < "${1:-/dev/stdin}"

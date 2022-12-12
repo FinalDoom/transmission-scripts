@@ -1,4 +1,8 @@
-source assertPassword.sh
+#!/usr/bin/env bash
+
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+source $SCRIPT_DIR/assertPassword.sh
 
 if [ "$#" -ne 1 ]
 then
@@ -10,7 +14,7 @@ TRACKER_MATCH="$1"
 
 while read TORRENT_ID
 do
-	if transmission-remote -n "$TRANSMISSION_CREDENTIALS" -t $TORRENT_ID --info-trackers | grep $TRACKER_MATCH -q
+	if transmission-remote -ne -t $TORRENT_ID --info-trackers | grep -E $TRACKER_MATCH -q
 	then 
 		echo $TORRENT_ID
 	fi

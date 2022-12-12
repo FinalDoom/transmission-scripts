@@ -4,4 +4,7 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 source $SCRIPT_DIR/assertPassword.sh
 
-transmission-remote -ne -l | awk '{ print $1 }' | grep -v 'Sum:\|ID' | tr -d '*'
+while read TORRENT_ID
+do
+	transmission-remote -ne -t $TORRENT_ID -i | grep Hash | awk '{ print $2 }'
+done < "${1:-/dev/stdin}"
