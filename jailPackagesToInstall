@@ -1,0 +1,13 @@
+  359  pkg install java
+  362  pkg search openjdk
+  363  pkg install openjdk11-jre-11.0.17+8.1_1
+  375  pkg install ffmpeg
+  454  pkg install screen
+  461  pkg install wait_on
+  469  pkg install git
+  512  pkg install transmission-utils
+  asd  pkg install ca_root_nss
+  514  history | grep pkg
+  515  history | grep pkg > jailPackagesToInstall
+pkg install base64
+pkg install jdupes
