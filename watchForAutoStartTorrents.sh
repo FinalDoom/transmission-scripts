@@ -12,53 +12,64 @@ mkdir $ADDED_BASE 2>/dev/null
 
 # Get login info
 source /root/.flood
+# Get colors
+source $SCRIPT_DIR/colors.sh
 
-#Best guesses below apple ii
+#Best guesses below zx spectrum
 declare -A SYSTEMS=(
 	["various artists-music"]="Music:Music"
 	["various artists-books"]="Books:Books,Games"
+	["amstrad cpc"]="AmstradCPC:AmstradCPC,Games"
+	["android"]="Android:Android,Games"
+	["apple ii"]="Apple2:Apple2,Games"
+	["commodore 64"]="Commodore64:Commodore64,Games"
+	["commodore amiga"]="Amiga:Amiga,Games"
+	["dos"]="DOS:DOS,Games"
+	["dreamcast"]="Dreamcast:Dreamcast,Games"
+	["game boy advance"]="GBA:GBA,Games"
+	["game boy color"]="GBC:GBC,Games"
+	["game boy"]="Gameboy:Gameboy,Games"
+	["mac"]="Mac:Mac,Games"
+	["master system"]="Sega_Genesis_MegaSG:SegaGenesis,Games"
+	["mega drive"]="Sega_Genesis_MegaSG:SegaGenesis,Games"
+	["neo geo pocket color"]="NeoGeoPocketColor:NeoGeoPocketColor,Games"
+	["nes"]="NES:NES,Games"
+	["nintendo 3ds"]="3DS:3DS,Games"
+	["nintendo 64"]="N64:N64,Games"
+	["nintendo ds"]="NDS:NDS,Games"
+	["nokia n-gage"]="N-Gage:NGage,Games"
+	["ouya"]="Ouya:Ouya,Games"
+	["philips cd-i"]="CD-i:CD-i,Games"
+	["phone-pda"]="Phone-PDA:Phone/PDA,Games"
 	["playstation 1"]="PSX:PSX,Games"
 	["playstation 2"]="PS2:PS2,Games"
 	["playstation 3"]="PS3:PS3,Games"
 	["playstation 4"]="PS4:PS4,Games"
-	["dreamcast"]="Dreamcast:Dreamcast,Games"
-	["nintendo ds"]="NDS:NDS,Games"
-	["nes"]="NES:NES,Games"
-	["amiga"]="Amiga:Amiga,Games"
-	["windows"]="PC:PC,Games"
-	["xbox"]="Xbox:Xbox,Games"
-	["apple ii"]="Apple2:Apple2,Games"
-	["v.smile"]="VSmile:V.Smile,Games"
-	["turbografx-16"]="TurboGrafx-16:TurboGrafx-16"
-	["mega drive"]="Sega_Genesis_MegaSG:SegaGenesis,Games"
-	["sega genesis"]="Sega_Genesis_MegaSG:SegaGenesis,Games"
-	["sega cd"]="Sega_Genesis_MegaSG:SegaGenesis,Games"
-	["playstation vita"]="PSVita:PSVita,Games"
 	["playstation portable"]="PSP:PSP,Games"
-	["mac"]="Mac:Mac,Games"
-	["sg-1000"]="SG-1000:SG-1000,Games"
-	["xbox 360"]="Xbox360:Xbox360,Games"
-	["dos"]="DOS:DOS,Games"
-	["wii"]="Wii:Wii,Games"
-	["wii u"]="WiiU:WiiU,Games"
-	["switch"]="Switch:Switch,Games"
-	["nintendo 3ds"]="3DS:3DS,Games"
-	["zx spectrum"]="ZXSpectrum:ZXSpectrum,Games"
+	["playstation vita"]="PSVita:PSVita,Games"
+	["saturn"]="Sega_Saturn:SegaSaturn,Games"
+	["sega genesis"]="Sega_Genesis_MegaSG:SegaGenesis,Games"
+	["sega saturn"]="Sega_Saturn:SegaSaturn,Games"
+	["snes"]="SNES:SNES,Games"
 	["super nintendo"]="SNES:SNES,Games"
+	["switch"]="Switch:Switch,Games"
+	["v.smile"]="VSmile:V.Smile,Games"
+	["wii u"]="WiiU:WiiU,Games"
+	["wii"]="Wii:Wii,Games"
+	["windows"]="PC:PC,Games"
+	["xbox 360"]="Xbox360:Xbox360,Games"
+	["xbox"]="Xbox:Xbox,Games"
+	["zx spectrum"]="ZXSpectrum:ZXSpectrum,Games"
+	["turbografx-16"]="TurboGrafx-16:TurboGrafx-16"
+	["sega cd"]="Sega_Genesis_MegaSG:SegaGenesis,Games"
+	["sg-1000"]="SG-1000:SG-1000,Games"
 	["gamecube"]="Gamecube:Gamecube,Games"
 	["pico"]="Pico:Pico,Games"
 	["linux"]="Linux:Linux,Games"
-	["gameboy color"]="GBC:GBC,Games"
-	["gameboy advance"]="GBA:GBA,Games"
-	["gameboy"]="Gameboy:Gameboy,Games"
 	["amiga"]="Amiga:Amiga,Games"
-	["commodore 64"]="Commodore64:Commodore64,Games"
-	["amstrad cpc"]="AmstradCPC:AmstradCPC,Games"
 	["3do"]="3DO:3DO,Games"
-	["sega saturn"]="SegaSaturn:SegaSaturn,Games"
 	["pc-98"]="PC-98:PC-98,Games"
-	["android"]="Android:Android,Games"
-	["cd-i"]="CD-i:CD-i,Games"
+	["bandai wonderswan color"]="Wonderswan_Color:WonderswanColor,Games"
 )
 
 while :
@@ -76,11 +87,11 @@ do
 		--cookie-jar ./flood-cookies.txt --cookie ./flood-cookies.txt \
 		-d '{"username":"'"${FLOOD_USER}"'","password":"'"${FLOOD_PASSWORD}"'"}' \
 		https://flood.finaldoom.net/api/auth/authenticate > /dev/null ||
-	echo Login Failed!
+	echo ${RED}Login Failed!${RESET}
 
 	find "$AUTO_BASE" -type f -depth +0 -print0 | head -n1 | while IFS= read -r -d '' file; do 
-		echo Got new file $file
-		system="` basename "$file" | awk -F ' - ' '{ print tolower($1) }' `"
+		echo ${CYAN}Got new file $file${RESET}
+		system="` basename "$file" | sed 's/^Retro - Other - //i' | awk -F ' - ' '{ print tolower($1) }' `"
 		# Special case for music/books
 		if [ "$system" = "various artists" ]
 		then
@@ -101,18 +112,19 @@ do
 
 		echo
 		echo Sending torrent to Flood:
-		echo File: $file
-		echo Tags: [$tags]
-		echo Destination: $destination
-		echo Base64: ${base64file:0:20}...${base64file: -20}
-		echo
+		echo ${BLACK}${BGWHITE}File:${RESET} $file
+		echo ${BLACK}${BGWHITE}Tags:${RESET} [$tags]
+		echo ${BLACK}${BGWHITE}Destination:${RESET} $destination
+		echo ${BLACK}${BGWHITE}Base64:${RESET} ${base64file:0:20}...${base64file: -20}
+		echo ${GREEN}
 
 		curl -L -X POST --fail \
 			-H "Content-Type: application/json; charset=utf-8" \
 			--cookie-jar ./flood-cookies.txt --cookie ./flood-cookies.txt \
 			-d '{"files":["'"$base64file"'"],"destination":"'"$destination"'","isBasePath":false,"isCompleted":false,"isSequential":false,"start":true,"tags":['"$tags"',"Scripted"]}' \
 			https://flood.finaldoom.net/api/torrents/add-files ||
-		echo Sending failed! &&
+		echo ${RED}Sending failed! &&
+		echo ${RESET} &&
 		mv "$file" $ADDED_BASE/
 		echo
 		echo

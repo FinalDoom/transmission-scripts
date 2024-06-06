@@ -22,7 +22,7 @@ do
 	if [ ! -d "$directory" ]
 	then
 		echo ID: $TORRENT_ID
-		echo -e "${Red}Torrent: ${Reset}${name}${Red} Directory does not exist!${Reset}"
+		echo -e "${RED}Torrent: ${RESET}${name}${RED} Directory does not exist!${RESET}"
 		continue
 	fi
 	size=`transmission-remote -ne -t $TORRENT_ID -i | grep "Total size:"`
@@ -37,9 +37,9 @@ do
 			echo "size: $size_total ($size_wanted)"
 			if [ "$size_total" == "$size_wanted" ]
 			then
-				echo -e "${Red}Torrent: ${Reset}${name}${Red} Missing files${Reset}"
+				echo -e "${RED}Torrent: ${RESET}${name}${RED} Missing files${RESET}"
 			else
-				echo -e "${Green}Torrent: ${Reset}${name}${Green} Missing unwanted files ${Reset}"
+				echo -e "${GREEN}Torrent: ${RESET}${name}${GREEN} Missing unwanted files ${RESET}"
 			fi
 			break 1
 		fi
